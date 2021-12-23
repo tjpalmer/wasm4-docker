@@ -1,0 +1,14 @@
+FROM docker.io/alpine
+
+RUN apk add \
+    bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ wget zlib
+
+RUN wget https://dot.net/v1/dotnet-install.sh && \
+    bash ./dotnet-install.sh -c Current
+RUN ln -s /root/.dotnet/dotnet /usr/bin/
+
+RUN apk add git
+
+WORKDIR /work
+RUN git clone -b wasm-nativelib --depth 1 \
+    https://github.com/yowl/runtimelab.git
