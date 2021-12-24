@@ -8,11 +8,12 @@ RUN apk add \
 #     bash ./dotnet-install.sh -c Current
 # RUN ln -s /root/.dotnet/dotnet /usr/bin/
 
-# Other requirements.
-RUN apk add clang cmake git python3
+# Add requirements for building aot llvm/wasm.
+RUN apk add clang cmake git make python3
 
 WORKDIR /work
 
+# Use fixes from this PR: https://github.com/dotnet/runtimelab/pull/1791
 RUN git clone -b wasm-nativelib --depth 1 \
     https://github.com/yowl/runtimelab.git
 # This installs dotnet.
