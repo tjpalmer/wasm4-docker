@@ -1,5 +1,6 @@
 FROM docker.io/alpine
 
+# Official requirements for dotnet.
 RUN apk add \
     bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ wget zlib
 
@@ -7,11 +8,12 @@ RUN apk add \
 #     bash ./dotnet-install.sh -c Current
 # RUN ln -s /root/.dotnet/dotnet /usr/bin/
 
-RUN apk add git
+# Other requirements.
+RUN apk add clang cmake git python3
 
 WORKDIR /work
 
 RUN git clone -b wasm-nativelib --depth 1 \
     https://github.com/yowl/runtimelab.git
 # This installs dotnet.
-RUN runtimelab/build.sh
+RUN runtimelab/build.sh || true
