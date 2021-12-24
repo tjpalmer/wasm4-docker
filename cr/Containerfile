@@ -1,0 +1,24 @@
+FROM docker.io/alpine
+
+# Official requirements for dotnet.
+RUN apk add \
+    bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ wget zlib
+
+# RUN wget https://dot.net/v1/dotnet-install.sh && \
+#     bash ./dotnet-install.sh -c Current
+# RUN ln -s /root/.dotnet/dotnet /usr/bin/
+
+# Add requirements for building things.
+RUN apk add clang cmake git make python3
+
+# Also needed for crystal and/or others.
+RUN apk add g++ llvm-dev
+RUN apk add crystal shards
+
+WORKDIR /work
+
+# Use fixes from this PR: https://github.com/dotnet/runtimelab/pull/1791
+RUN git clone -b feat/webassembly --depth 1 \
+    https://github.com/lbguilherme/crystal.git
+# This installs dotnet.
+RUN cd crystal && make || true
